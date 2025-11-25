@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hibiki - 小さな一歩で自分を育てるセルフ育成アプリ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基本設定 --- */
+        :root {
+            --bg-color: #F6F4F4;
+            --text-color: #4A4A4A;
+            --accent-green: #9BD4B3;
+            --accent-green-hover: #86c2a0;
+            --story-bg: #FFFDF5;
+            --white: #ffffff;
+            --number-color: #C0C0C0; /* 番号の色を少し濃くしました */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- ボタン --- */
+        .btn-primary {
+            background-color: var(--accent-green);
+            color: var(--white);
+            padding: 16px 80px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(155, 212, 179, 0.5);
+            margin-top: 40px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-green-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(155, 212, 179, 0.7);
+        }
+
+        /* --- スマホ画像の共通スタイル（修正版） --- */
+        .phone-mockup {
+            width: 100%;
+            max-width: 240px;
+            height: auto;
+            /* 白枠を削除し、画像の黒枠を活かす */
+            border: none; 
+            /* 角丸を小さくして、画像の端が切れないように調整 */
+            border-radius: 20px; 
+            /* 影は残して立体感を維持 */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12); 
+            transition: transform 0.4s ease;
+        }
+
+        .phone-mockup:hover {
+            transform: translateY(-8px);
+        }
+
+        /* --- ヒーローセクション --- */
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+        }
+
+        .hero-layout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 80px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .hero-text-area {
+            flex: 1;
+            max-width: 480px;
+        }
+
+        .hero-logo {
+            font-size: 5rem;
+            color: #AECDB5;
+            font-weight: 300;
+            margin-bottom: 10px;
+            font-family: sans-serif;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-copy {
+            font-size: 2rem;
+            font-weight: 500;
+            line-height: 1.6;
+            margin: 0;
+            color: #555;
+        }
+
+        .hero-images {
+            flex: 1.2;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        /* --- 悩みセクション（修正版） --- */
+        .problems {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .section-desc {
+            margin-bottom: 70px;
+            font-size: 1rem;
+            color: #777;
+        }
+
+        .problems-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 50px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .problem-item {
+            width: calc(33.33% - 50px);
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .problem-icon {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .problem-item:hover .problem-icon {
+            transform: scale(1.1);
+        }
+
+        .problem-title {
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            min-height: 3.2em; /* タイトルの高さを揃えて、本文の開始位置を合わせる */
+            display: flex;
+            align-items: center; /* 垂直方向中央揃え */
+            text-align: center;
+        }
+
+        .problem-text {
+            font-size: 0.9rem;
+            color: #777;
+            text-align: center; /* 中央揃えに変更してバランスを整える */
+            width: 100%;
+            line-height: 1.7;
+        }
+
+        /* --- パートナーメッセージ --- */
+        .partner-message {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 500;
+            padding: 80px 0 60px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* --- 機能紹介 (共通) --- */
+        .feature {
+            padding: 80px 0;
+        }
+
+        .feature-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+        }
+
+        .feature:nth-child(even) .feature-content {
+            flex-direction: row-reverse;
+        }
+
+        .feature-text {
+            flex: 0.9;
+        }
+
+        .feature-number {
+            font-size: 5rem;
+            color: var(--number-color); /* 濃くした色を適用 */
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .feature-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+        }
+
+        .feature-image {
+            flex: 1.3;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        /* --- 開発者ストーリー --- */
+        .story {
+            padding: 80px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .story-box {
+            background-color: var(--story-bg);
+            padding: 80px;
+            border-radius: 30px;
+            max-width: 720px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .story-title {
+            text-align: center;
+            font-size: 1.6rem;
+            margin-bottom: 50px;
+            color: #555;
+            display: block;
+        }
+        
+        .story-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-green);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        .story-text p {
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+            text-align: justify;
+            color: #666;
+        }
+
+        /* --- お知らせ & フッター --- */
+        .notice {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .notice-title {
+            font-size: 1.6rem;
+            margin-bottom: 40px;
+            color: #555;
+        }
+
+        .notice-text {
+            max-width: 600px;
+            margin: 0 auto 50px;
+            text-align: left;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .notice-text p {
+            margin-bottom: 20px;
+        }
+
+        /* --- レスポンシブ調整 --- */
+        @media (max-width: 768px) {
+            .hero { padding: 60px 0; }
+            
+            .hero-layout {
+                flex-direction: column;
+                text-align: center;
+                gap: 40px;
+            }
+            .hero-logo { font-size: 4rem; }
+            .hero-copy { font-size: 1.5rem; }
+            
+            .hero-images {
+                gap: 15px;
+            }
+            .phone-mockup {
+                max-width: 150px;
+                border-radius: 12px; /* スマホ時はさらに角丸を小さく調整 */
+            }
+
+            .problems-grid {
+                gap: 30px;
+            }
+            .problem-item {
+                width: calc(50% - 20px);
+                min-width: auto;
+            }
+            .problem-icon { width: 80px; }
+            
+            /* スマホで下段2つになった時のテキスト調整 */
+            .problem-text {
+                font-size: 0.85rem;
+            }
+
+            .feature-content, 
+            .feature:nth-child(even) .feature-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 40px;
+            }
+            .feature-list {
+                text-align: left;
+                display: inline-block;
+            }
+            .feature-image {
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .story-box { padding: 40px 24px; }
+            .btn-primary { width: 80%; padding: 16px 0; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-layout">
+                <div class="hero-text-area">
+                    <div class="hero-logo">hibiki</div>
+                    <h1 class="hero-copy">
+                        小さな一歩で、<br>
+                        自分を育てる<br>
+                        セルフ育成アプリ
+                    </h1>
+                </div>
+                <div class="hero-images">
+                    <img src="images/home.png" alt="ホーム画面" class="phone-mockup">
+                    <img src="images/dashboard.png" alt="ダッシュボード画面" class="phone-mockup">
+                </div>
+            </div>
+
+            <!-- 登録ボタン (URL変更済み) -->
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsACbK7Kg33A4zYSzHd6v9SOeUWlDt9ZRzJL7DC4SBNCusiA/viewform?usp=dialog" target="_blank" class="btn-primary">登録</a>
+        </div>
+    </section>
+
+    <!-- Problems Section -->
+    <section class="problems">
+        <div class="container">
+            <h2 class="section-title">こんな悩みありませんか？</h2>
+            <p class="section-desc">私たちがあなたのはじめの一歩をサポートするので<br>一歩踏み出してみませんか？</p>
+
+            <div class="problems-grid">
+                <!-- 上段 3つ -->
+                <div class="problem-item">
+                    <img src="images/problem1.png" alt="無気力" class="problem-icon">
+                    <div class="problem-title">無気力な日が多く、<br>やる気が出ない</div>
+                    <div class="problem-text">日々の小さな達成が、無気力のループを少しずつ断ち切ってくれる</div>
+                </div>
+                <div class="problem-item">
+                    <img src="images/problem2.png" alt="不安" class="problem-icon">
+                    <div class="problem-title">なんとなく<br>不安・しんどさがある</div>
+                    <div class="problem-text">ぼんやりした不安が“言葉”になり、気持ちの整理がしやすくなる</div>
+                </div>
+                <div class="problem-item">
+                    <img src="images/problem3.png" alt="無機質" class="problem-icon">
+                    <div class="problem-title">無機質な毎日が<br>続いている</div>
+                    <div class="problem-text">一日一日を振り返ることで、毎日が特別な日になる</div>
+                </div>
+                
+                <!-- 下段 2つ -->
+                <div class="problem-item">
+                    <img src="images/problem4.png" alt="やりたいことがない" class="problem-icon">
+                    <div class="problem-title">やりたいことが<br>わからない</div>
+                    <div class="problem-text">自分のための小さな時間を積み重ねるほど、心が向く方向が少しずつ見えてくる</div>
+                </div>
+                <div class="problem-item">
+                    <img src="images/problem5.png" alt="先延ばし" class="problem-icon">
+                    <div class="problem-title">夜眠るのを<br>先延ばしにする</div>
+                    <div class="problem-text">小さな満足感が積み重なり、夜に理由のないダラダラが減っていく</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partner Message -->
+    <div class="container">
+        <p class="partner-message">
+            hibikiは始めの一歩を踏み<br>
+            出すためのパートナーです
+        </p>
+    </div>
+
+    <!-- Feature 1: クエスト -->
+    <section class="feature">
+        <div class="container feature-content">
+            <div class="feature-text">
+                <div class="feature-number">1</div>
+                <h3 class="feature-title">クエスト</h3>
+                <ul class="feature-list">
+                    <li>日・月のクエストで行動が変わる</li>
+                    <li>達成すると経験値が入り、自分のレベルが上がっていく</li>
+                </ul>
+            </div>
+            <div class="feature-image">
+                <img src="images/quest.png" alt="クエスト画面" class="phone-mockup">
+                <img src="images/home.png" alt="レベルアップ画面" class="phone-mockup">
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature 2: 振り返り -->
+    <section class="feature">
+        <div class="container feature-content">
+            <div class="feature-text">
+                <div class="feature-number">2</div>
+                <h3 class="feature-title">振り返り</h3>
+                <ul class="feature-list">
+                    <li>その日の気分とよかったことを記録</li>
+                    <li>小さな振り返りが、あなたの毎日を意味のある日に変える</li>
+                </ul>
+            </div>
+            <div class="feature-image">
+                <img src="images/lookback.png" alt="振り返り画面" class="phone-mockup">
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature 3: カレンダー＆ダッシュボード -->
+    <section class="feature">
+        <div class="container feature-content">
+            <div class="feature-text">
+                <div class="feature-number">3</div>
+                <h3 class="feature-title">カレンダー＆<br>ダッシュボード</h3>
+                <ul class="feature-list">
+                    <li>気分・行動・睡眠がひと目でわかるカレンダー</li>
+                    <li>データがたまるほど、自分の傾向と成長が見えてくる</li>
+                </ul>
+            </div>
+            <div class="feature-image">
+                <img src="images/calender.png" alt="カレンダー画面" class="phone-mockup">
+                <img src="images/dashboard.png" alt="ダッシュボード画面" class="phone-mockup">
+            </div>
+        </div>
+    </section>
+
+    <!-- Developer Story -->
+    <section class="story">
+        <div class="story-box">
+            <h2 class="story-title">開発者ストーリー</h2>
+            <div class="story-text">
+                <p>私自身、無機質な日々が続き、「しんどいな」と感じる時間が増えていました。<br>ただ一方で、何をやりたいのと問いかけた時に自分のことなのに答えることができない。<br>気づけば毎日をスマホで埋め合わせ、その結果、適応障害と診断されました。</p>
+                <p>同じような悩みを抱えている人は、今の時代少なくないと思います。<br>そして私自身の経験から言えるのは、</p>
+                <p>この苦しさを一瞬で解決する“魔法”は存在しないし、誰かが解決してくれることはない自分だけで解決しないといけないということです。</p>
+                <p>今ではだいぶ改善した症状を埋めてくれたのはシンプルかつ簡単なことでした。<br>それは自分のための時間を確保することです。</p>
+                <p>だからこそ、どんなに小さなことであっても自分のための時間を取り戻すことが大切だと感じました。<br>自分のために時間を確保し、対話を重ねていく。<br>その積み重ねが気持ちを整え、行動を変え、習慣を変え、やがて「どう生きたいか」が見えはじめる。</p>
+                <p>その最初の一歩を支えられるものを作りたい。<br>そう思って、このアプリをつくりました。</p>
+                <p>無機質に流れてしまう毎日を、<br>自分の手で少しずつ整えていくための小さなきっかけとして。<br>あなたの毎日に寄り添えたら嬉しいです。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notice & Footer -->
+    <section class="notice">
+        <div class="container">
+            <h2 class="notice-title">お知らせ</h2>
+            <div class="notice-text">
+                <p>メールアドレスをご登録いただくと、正式ローンチ時にいち早くお知らせします。</p>
+                <p>こちらに登録していただいた方には、<br>無理のない範囲で感想や改善点をお伺いする場合があります。</p>
+                <p>ご協力いただけると、とても嬉しいです。</p>
+            </div>
+            <!-- 登録ボタン (URL変更済み) -->
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsACbK7Kg33A4zYSzHd6v9SOeUWlDt9ZRzJL7DC4SBNCusiA/viewform?usp=dialog" target="_blank" class="btn-primary">登録</a>
+        </div>
+    </section>
+
+</body>
+</html>
